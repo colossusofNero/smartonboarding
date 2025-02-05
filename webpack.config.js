@@ -1,4 +1,5 @@
 const path = require('path');
+<<<<<<< HEAD
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 require('dotenv').config();
@@ -61,3 +62,30 @@ module.exports = {
     },
     devtool: 'source-map'
 };
+=======
+
+module.exports = {
+  entry: './src/index.js',
+  output: {
+    filename: 'onboarding-bundle.js',
+    path: path.resolve(__dirname, 'dist'),
+  },
+  module: {
+    rules: [
+      {
+        test: /\.(js|jsx)$/,
+        exclude: /node_modules/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: ['@babel/preset-react']
+          }
+        }
+      }
+    ]
+  },
+  resolve: {
+    extensions: ['.js', '.jsx']
+  }
+};
+>>>>>>> fdd7a9b4dd56ba975467c7e8b11a0135e36686a9

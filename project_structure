@@ -1,0 +1,15 @@
+project-root/
+├── src/
+│   ├── components/
+│   │   ├── OnboardingForm.jsx       # Main form component
+│   │   ├── StepPersonal.jsx         # Step 1 component
+│   │   ├── StepBusiness.jsx         # Step 2 component
+│   │   ├── StepStripeConnect.jsx    # Step 3 component
+│   │   ├── StepAssistant.jsx        # Step 4 component
+│   │   └── StepReview.jsx           # Step 5 component
+│   ├── utils/
+│   │   ├── validation.js            # Form validation
+│   │   └── api.js                   # API calls
+│   └── index.js                     # Main entry point
+├── package.json
+└── webpack.config.js                # Bundler configuration
