@@ -238,12 +238,21 @@ console.log('Environment variables:', {
     const handleStripeConnect = async () => {
         setIsStripeLoading(true);
         try {
+            console.log('Making request to:', `${API_URL}/api/create-connect-account`);
+            console.log('Request payload:', {
+                email: formData.email,
+                name: `${formData.firstName} ${formData.lastName}`,
+                company: formData.firmName,
+                returnUrl: `${FRONTEND_URL}/onboarding?step=4`,
+                refreshUrl: `${FRONTEND_URL}/onboarding?step=3`
+            });
+    
             const response = await fetch(`${API_URL}/api/create-connect-account`, {
                 method: 'POST',
-                credentials: 'include',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Accept': 'application/json'
+                    'Accept': 'application/json',
+                    'Origin': window.location.origin
                 },
                 body: JSON.stringify({
                     email: formData.email,
@@ -254,32 +263,32 @@ console.log('Environment variables:', {
                 })
             });
     
+            console.log('Response status:', response.status);
+            console.log('Response headers:', Object.fromEntries(response.headers.entries()));
+    
             if (!response.ok) {
                 const errorText = await response.text();
-                console.error('Full Stripe response:', errorText);
-                throw new Error(errorText);
+                console.error('Error response:', errorText);
+                throw new Error(`HTTP error! status: ${response.status}`);
             }
     
-            const contentType = response.headers.get("content-type");
-            if (contentType?.includes("application/json")) {
-                const data = await response.json();
-                if (data.accountLink) {
-                    if (data.accountId) {
-                        setFormData(prev => ({
-                            ...prev,
-                            stripeAccountId: data.accountId
-                        }));
-                    }
-                    window.location.href = data.accountLink;
-                } else {
-                    throw new Error('No account link received from server');
+            const data = await response.json();
+            console.log('Success response:', data);
+    
+            if (data.accountLink) {
+                if (data.accountId) {
+                    setFormData(prev => ({
+                        ...prev,
+                        stripeAccountId: data.accountId
+                    }));
                 }
+                window.location.href = data.accountLink;
             } else {
-                throw new Error('Invalid response from server');
+                throw new Error('No account link received from server');
             }
         } catch (error) {
-            console.error('Detailed Stripe error:', error);
-            alert('Error connecting to Stripe: ' + error.message);
+            console.error('Stripe connection error:', error);
+            alert(`Error connecting to Stripe: ${error.message}. Please check the console for more details.`);
         } finally {
             setIsStripeLoading(false);
         }
