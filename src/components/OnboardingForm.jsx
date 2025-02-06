@@ -55,9 +55,9 @@ const OnboardingForm = () => {
     // Update how we access environment variables
     const API_URL = process.env.REACT_APP_API_URL || DEFAULT_API_URL;
     const FRONTEND_URL = process.env.REACT_APP_FRONTEND_URL || DEFAULT_FRONTEND_URL;
-    const REACT_APP_CASPIO_TOKEN = process.env.REACT_APP_CASPIO_TOKEN;
+    const CASPIO_TOKEN = process.env.REACT_APP_CASPIO_TOKEN;
 console.log('Environment variables:', {
-    REACT_APP_CASPIO_TOKEN,
+    CASPIO_TOKEN,
     allEnv: process.env
 });
     const PAYMENT_OPTIONS = [
@@ -287,7 +287,7 @@ console.log('Environment variables:', {
     
     const handleSubmitForm = async () => {
         if (!validateForm()) return;
-        if (!REACT_APP_CASPIO_TOKEN) {
+        if (!CASPIO_TOKEN) {
             console.error('Caspio token not found in environment variables');
             alert('Configuration error. Please contact support.');
             return;
@@ -319,7 +319,7 @@ console.log('Environment variables:', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${REACT_APP_CASPIO_TOKEN}`
+                    'Authorization': `Bearer ${CASPIO_TOKEN}`
                 },
                 body: JSON.stringify({
                     "Email": formData.email,
