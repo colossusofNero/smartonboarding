@@ -1,8 +1,6 @@
 const path = require('path');
-<<<<<<< HEAD
-const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-require('dotenv').config();
+const webpack = require('webpack');
 
 module.exports = {
     mode: 'development',
@@ -40,15 +38,16 @@ module.exports = {
         extensions: ['.js', '.jsx']
     },
     plugins: [
+        new HtmlWebpackPlugin({
+            template: './index.html',
+            inject: true
+        }),
         new webpack.DefinePlugin({
             'process.env': JSON.stringify({
-                REACT_APP_API_URL: 'https://smart-onboarding-8cbf3cd91007.herokuapp.com',
-                REACT_APP_FRONTEND_URL: 'http://localhost:3000',
-                REACT_APP_CASPIO_TOKEN: 'nyH5Xsn7mR2QsOFI3XycP1IZR1njoJZ9_2WWbX0l-QVZfQRMHTLFS2kSIjlnjTykGvoDRlLOvtz65ayqOSfW1_HwFF7phfQcCpPhyoVCRH47MeWj0BHhJ8kXAxkYI3K1twcBrYsgKGjzskZ9qVmqIoeLzkSWt-M0EyfUM0BtYYBPYedCEUCckCN84RdD3J-lMbge2o00xV-a3cxhgArAMEFneDhaAAWqc7Kvo34MaayGGHfqB3NBVvgMqdz3g0Zu6JnNl_p_gZis3-t8Fx9OlxUfDgEaI1CpnBu-A5t0KbMQnq1--vceJHEjam3mqKCNCwlK7wz0cWS3KtpTjAIPjRSo9elR8o0EN1Icelh4K8IftFx8yr_UsyDVhQLKEtdo8eYtWrElaJiomObA43effj5cB18ezUiLOmfpuVLUbQM'
+                REACT_APP_API_URL: process.env.REACT_APP_API_URL || 'https://smart-onboarding-8cbf3cd91007.herokuapp.com',
+                REACT_APP_FRONTEND_URL: process.env.REACT_APP_FRONTEND_URL || 'http://localhost:3000',
+                REACT_APP_CASPIO_TOKEN: process.env.REACT_APP_CASPIO_TOKEN || ''
             })
-        }),
-        new HtmlWebpackPlugin({
-            template: './index.html'
         })
     ],
     devServer: {
@@ -62,30 +61,3 @@ module.exports = {
     },
     devtool: 'source-map'
 };
-=======
-
-module.exports = {
-  entry: './src/index.js',
-  output: {
-    filename: 'onboarding-bundle.js',
-    path: path.resolve(__dirname, 'dist'),
-  },
-  module: {
-    rules: [
-      {
-        test: /\.(js|jsx)$/,
-        exclude: /node_modules/,
-        use: {
-          loader: 'babel-loader',
-          options: {
-            presets: ['@babel/preset-react']
-          }
-        }
-      }
-    ]
-  },
-  resolve: {
-    extensions: ['.js', '.jsx']
-  }
-};
->>>>>>> fdd7a9b4dd56ba975467c7e8b11a0135e36686a9

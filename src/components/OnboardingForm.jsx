@@ -241,12 +241,9 @@ const OnboardingForm = () => {
                 company: formData.firmName
             });
     
-            // Use HTTPS for production
-            const apiUrl = process.env.NODE_ENV === 'production' 
-                ? `https://${API_URL}/api/create-connect-account`
-                : `${API_URL}/api/create-connect-account`;
-    
-            const response = await fetch(apiUrl, {
+            // Always use HTTPS for Stripe connections
+            const baseUrl = API_URL.replace('http://', 'https://');
+            const response = await fetch(`${baseUrl}/api/create-connect-account`, {
                 method: 'POST',
                 credentials: 'include',
                 headers: {
@@ -259,8 +256,7 @@ const OnboardingForm = () => {
                     name: `${formData.firstName} ${formData.lastName}`,
                     company: formData.firmName,
                     returnUrl: `${FRONTEND_URL}/onboarding?step=4`,
-                    refreshUrl: `${FRONTEND_URL}/onboarding?step=3`,
-                    mode: process.env.NODE_ENV // Add this to tell Stripe if we're in dev or production
+                    refreshUrl: `${FRONTEND_URL}/onboarding?step=3`
                 })
             });
     
@@ -269,7 +265,6 @@ const OnboardingForm = () => {
                 console.error('Full Stripe response:', errorText);
                 throw new Error(errorText);
             }
-            alert('Form submitted successfully!');
     
             const contentType = response.headers.get("content-type");
             if (contentType?.includes("application/json")) {
