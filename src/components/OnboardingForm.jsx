@@ -234,22 +234,12 @@ const OnboardingForm = () => {
     const handleStripeConnect = async () => {
         setIsStripeLoading(true);
         try {
-            // Add logging
-            console.log('Stripe Connect Request Data:', {
-                email: formData.email,
-                name: `${formData.firstName} ${formData.lastName}`,
-                company: formData.firmName
-            });
-    
-            // Always use HTTPS for Stripe connections
-            const baseUrl = API_URL.replace('http://', 'https://');
-            const response = await fetch(`${baseUrl}/api/create-connect-account`, {
+            const response = await fetch(`${API_URL}/api/create-connect-account`, {
                 method: 'POST',
                 credentials: 'include',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                    'Origin': window.location.origin
+                    'Accept': 'application/json'
                 },
                 body: JSON.stringify({
                     email: formData.email,
